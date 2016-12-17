@@ -24,12 +24,15 @@ public interface HelloService extends Service {
 
     ServiceCall<NotUsed, String> hello(String id);
 
+    ServiceCall<String, NotUsed> changeGreeting(String greeting);
+
     ServiceCall<String, Source<String, ?>> stream(int interval);
 
   @Override
   default Descriptor descriptor() {
       return named("helloservice").withCalls(
               pathCall("/api/hello/:id",  this::hello),
+              pathCall("/api/change/:greeting",  this::changeGreeting),
               pathCall("/api/stream/:interval",  this::stream))
 //      .withAutoAcl(true);
 

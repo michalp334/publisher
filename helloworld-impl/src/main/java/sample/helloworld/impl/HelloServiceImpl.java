@@ -47,7 +47,17 @@ public class HelloServiceImpl implements HelloService {
     };
   }
 
-  @Override
+    @Override
+    public ServiceCall<String, NotUsed> changeGreeting(String greeting) {
+        return request -> {
+            // Look up the hello world entity for the given ID.
+            PersistentEntityRef<HelloCommand> ref = persistentEntityRegistry.refFor(HelloEntity.class, greeting);
+            // Ask the entity the Hello command.
+            return ref.ask(new UseGreetingMessage(greeting));
+        };
+    }
+
+    @Override
   public ServiceCall<String, Source<String, ?>> stream(int intervalMs) {
     return tickMessage -> {
       FiniteDuration interval = FiniteDuration.create(intervalMs, TimeUnit.MILLISECONDS);
