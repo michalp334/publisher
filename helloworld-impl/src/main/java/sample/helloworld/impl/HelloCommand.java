@@ -19,7 +19,7 @@ import com.lightbend.lagom.serialization.Jsonable;
 import akka.Done;
 
 /**
- * This interface defines all the commands that the HelloWorld entity supports.
+ * This interface defines all the commands that the HelloEntity entity supports.
  * 
  * By convention, the commands should be inner classes of the interface, which
  * makes it simple to get a complete picture of what commands an entity

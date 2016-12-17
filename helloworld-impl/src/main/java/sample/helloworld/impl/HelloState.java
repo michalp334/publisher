@@ -13,18 +13,18 @@ import com.google.common.base.Preconditions;
 import com.lightbend.lagom.serialization.CompressedJsonable;
 
 /**
- * The state for the {@link HelloWorld} entity.
+ * The state for the {@link HelloEntity} entity.
  */
 @SuppressWarnings("serial")
 @Immutable
 @JsonDeserialize
-public final class WorldState implements CompressedJsonable {
+public final class HelloState implements CompressedJsonable {
 
   public final String message;
   public final String timestamp;
 
   @JsonCreator
-  public WorldState(String message, String timestamp) {
+  public HelloState(String message, String timestamp) {
     this.message = Preconditions.checkNotNull(message, "message");
     this.timestamp = Preconditions.checkNotNull(timestamp, "timestamp");
   }
@@ -33,10 +33,10 @@ public final class WorldState implements CompressedJsonable {
   public boolean equals(@Nullable Object another) {
     if (this == another)
       return true;
-    return another instanceof WorldState && equalTo((WorldState) another);
+    return another instanceof HelloState && equalTo((HelloState) another);
   }
 
-  private boolean equalTo(WorldState another) {
+  private boolean equalTo(HelloState another) {
     return message.equals(another.message) && timestamp.equals(another.timestamp);
   }
 
@@ -50,6 +50,6 @@ public final class WorldState implements CompressedJsonable {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper("WorldState").add("message", message).add("timestamp", timestamp).toString();
+    return MoreObjects.toStringHelper("HelloState").add("message", message).add("timestamp", timestamp).toString();
   }
 }

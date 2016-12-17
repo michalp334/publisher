@@ -14,7 +14,7 @@ import sample.helloworld.impl.HelloCommand.UseGreetingMessage;
 import sample.helloworld.impl.HelloEvent.GreetingMessageChanged;
 
 /**
- * This is an event sourced entity. It has a state, {@link WorldState}, which
+ * This is an event sourced entity. It has a state, {@link HelloState}, which
  * stores what the greeting should be (eg, "Hello").
  * <p>
  * Event sourced entities are interacted with by sending them commands. This
@@ -32,14 +32,14 @@ import sample.helloworld.impl.HelloEvent.GreetingMessageChanged;
  * This entity defines one event, the {@link GreetingMessageChanged} event,
  * which is emitted when a {@link UseGreetingMessage} command is received.
  */
-public class HelloWorld extends PersistentEntity<HelloCommand, HelloEvent, WorldState> {
+public class HelloEntity extends PersistentEntity<HelloCommand, HelloEvent, HelloState> {
 
   /**
    * An entity can define different behaviours for different states, but it will
    * always start with an initial behaviour. This entity only has one behaviour.
    */
   @Override
-  public Behavior initialBehavior(Optional<WorldState> snapshotState) {
+  public Behavior initialBehavior(Optional<HelloState> snapshotState) {
 
     /*
      * Behaviour is defined using a behaviour builder. The behaviour builder
@@ -51,7 +51,7 @@ public class HelloWorld extends PersistentEntity<HelloCommand, HelloEvent, World
      * Otherwise, the default state is to use the Hello greeting.
      */
     BehaviorBuilder b = newBehaviorBuilder(
-        snapshotState.orElse(new WorldState("Hello", LocalDateTime.now().toString())));
+        snapshotState.orElse(new HelloState("Hello", LocalDateTime.now().toString())));
 
     /*
      * Command handler for the UseGreetingMessage command.
@@ -69,7 +69,7 @@ public class HelloWorld extends PersistentEntity<HelloCommand, HelloEvent, World
     b.setEventHandler(GreetingMessageChanged.class,
         // We simply update the current state to use the greeting message from
         // the event.
-        evt -> new WorldState(evt.message, LocalDateTime.now().toString()));
+        evt -> new HelloState(evt.message, LocalDateTime.now().toString()));
 
     /*
      * Command handler for the Hello command.
