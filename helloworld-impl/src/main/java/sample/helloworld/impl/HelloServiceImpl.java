@@ -41,6 +41,7 @@ public class HelloServiceImpl implements HelloService {
   public ServiceCall<NotUsed, String> hello(String id) {
     return request -> {
       // Look up the hello world entity for the given ID.
+        //działa również dla nowych entities (tak było z createAccount)
       PersistentEntityRef<HelloCommand> ref = persistentEntityRegistry.refFor(HelloEntity.class, id);
       // Ask the entity the Hello command.
       return ref.ask(new Hello(id, Optional.empty()));
@@ -48,12 +49,13 @@ public class HelloServiceImpl implements HelloService {
   }
 
     @Override
-    public ServiceCall<String, NotUsed> changeGreeting(String greeting) {
+    public ServiceCall<String, NotUsed> changeGreeting(String id, String greeting) {
         return request -> {
             // Look up the hello world entity for the given ID.
-            PersistentEntityRef<HelloCommand> ref = persistentEntityRegistry.refFor(HelloEntity.class, greeting);
+            PersistentEntityRef<HelloCommand> ref = persistentEntityRegistry.refFor(HelloEntity.class, id);
             // Ask the entity the Hello command.
-            return ref.ask(new UseGreetingMessage(greeting));
+            return ref.ask(new UseGreetingMessage(greeting))
+                    .thenApply(ack -> NotUsed.getInstance());
         };
     }
 

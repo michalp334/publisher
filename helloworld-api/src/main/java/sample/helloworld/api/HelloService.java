@@ -17,14 +17,14 @@ import com.lightbend.lagom.javadsl.api.ServiceCall;
 
 import com.lightbend.lagom.javadsl.api.*;
 import com.lightbend.lagom.javadsl.api.broker.Topic;
-
+import com.lightbend.lagom.javadsl.api.transport.Method;
 
 
 public interface HelloService extends Service {
 
     ServiceCall<NotUsed, String> hello(String id);
 
-    ServiceCall<String, NotUsed> changeGreeting(String greeting);
+    ServiceCall<String, NotUsed> changeGreeting(String id, String greeting);
 
     ServiceCall<String, Source<String, ?>> stream(int interval);
 
@@ -32,7 +32,7 @@ public interface HelloService extends Service {
   default Descriptor descriptor() {
       return named("helloservice").withCalls(
               pathCall("/api/hello/:id",  this::hello),
-              pathCall("/api/change/:greeting",  this::changeGreeting),
+              restCall(Method.PUT, "/api/:id/change/:greeting",  this::changeGreeting),
               pathCall("/api/stream/:interval",  this::stream))
 //      .withAutoAcl(true);
 
