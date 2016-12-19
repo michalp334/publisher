@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.CompletableFuture.completedFuture;
-import static sample.helloworld.impl.HelloCommand.*;
 
 /**
  * Implementation of the HelloService.
@@ -44,7 +43,7 @@ public class HelloServiceImpl implements HelloService {
         //działa również dla nowych entities (tak było z createAccount)
       PersistentEntityRef<HelloCommand> ref = persistentEntityRegistry.refFor(HelloEntity.class, id);
       // Ask the entity the Hello command.
-      return ref.ask(new Hello(id, Optional.empty()));
+      return ref.ask(new HelloCommand.Hello(id, Optional.empty()));
     };
   }
 
@@ -54,7 +53,7 @@ public class HelloServiceImpl implements HelloService {
             // Look up the hello world entity for the given ID.
             PersistentEntityRef<HelloCommand> ref = persistentEntityRegistry.refFor(HelloEntity.class, id);
             // Ask the entity the Hello command.
-            return ref.ask(new UseGreetingMessage(greeting))
+            return ref.ask(new HelloCommand.UseGreetingMessage(greeting))
                     .thenApply(ack -> NotUsed.getInstance());
         };
     }
