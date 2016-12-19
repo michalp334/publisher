@@ -3,10 +3,15 @@ import com.typesafe.sbt.SbtNativePackager.packageArchetype
 name := "publisher"
 version := "0"
 
+
+
 organization in ThisBuild := "sample.helloworld"
+
 
 // the Scala version that will be used for cross-compiled libraries
 scalaVersion in ThisBuild := "2.11.8"
+
+
 
 //something suggested for faster refreshes
 updateOptions in Global := updateOptions.in(Global).value.withCachedResolution(true)
@@ -44,28 +49,6 @@ lazy val helloworldImpl = project("helloworld-impl")
   .settings(lagomForkedTestSettings: _*)
   .settings(dockerRepository := Some("michal334/workspace"))
   .dependsOn(helloworldApi)
-
-lazy val subscriberApi = project("subscriber-api")
-  .settings(
-    version := "1.0-SNAPSHOT",
-    libraryDependencies += lagomJavadslApi
-  )
-  .settings(dockerRepository := Some("michal334/workspace"))
-
-lazy val subscriberImpl = project("subscriber-impl")
-  .enablePlugins(LagomJava)
-  .settings(
-    version := "1.0-SNAPSHOT",
-    libraryDependencies ++= Seq(
-      //Dependency for Kafka - subcriber only
-      lagomJavadslKafkaClient
-    )
-  )
-  .settings(lagomForkedTestSettings: _*)
-  .settings(dockerRepository := Some("michal334/workspace"))
-  .dependsOn(subscriberApi, helloworldApi)
-//  .dependsOn(helloworldApi)
-//  .dependsOn(helloworldImpl)
 
 
 def project(id: String) = Project(id, base = file(id))
