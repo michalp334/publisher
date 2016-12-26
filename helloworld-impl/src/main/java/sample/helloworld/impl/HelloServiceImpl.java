@@ -66,9 +66,7 @@ public class HelloServiceImpl implements HelloService {
     };
   }
 
-  //no dobra, a co jak chcę tylko jeden typ eventów publishować w tym topicu?
-  //event handlery są dla konkretnych typów eventów więc to nie
-  //ServiceCall'e które zwracają response mają zapytania do bazy danych, ale tam nie ma żadnych streamów czy offsetów
+
   public Topic<GreetingMessage> greetingsTopic() {
     return TopicProducer.singleStreamWithOffset(offset -> {
       return persistentEntityRegistry
@@ -77,10 +75,7 @@ public class HelloServiceImpl implements HelloService {
     });
   }
 
-  //No dobra - tylko jak dostaję Event który nie ma nic zdefiniowane to jak mam stamtąd wyciągnąć
-  //stringa to Message!?
-  //czy tu ma być coś podobnego jak jest w Service callu?
-  //albo gdzieś indziej jeszcze zajrzejeć na event handlery jak ogarniają (PersistentEntity albo ew. ReadSideProcessor)
+
     private Pair<GreetingMessage, Offset> convertEvent(Pair<HelloEvent, Offset> helloEventOffsetPair) {
 
       GreetingMessage message = new GreetingMessage(helloEventOffsetPair.first().getMessage());
