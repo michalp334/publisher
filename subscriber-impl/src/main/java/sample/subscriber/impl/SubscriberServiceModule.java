@@ -13,15 +13,10 @@ import sample.subscriber.api.SubscriberService;
  */
 public class SubscriberServiceModule extends AbstractModule implements ServiceGuiceSupport {
 
-//  /*      * This tells Guice that whenever it sees a dependency on a TransactionLog,
-// * it should satisfy the dependency using a DatabaseTransactionLog.      */
-//  bind(TransactionLog.class).to(DatabaseTransactionLog.class);
-
 
   @Override
   protected void configure() {
     bindServices(serviceBinding(SubscriberService.class, SubscriberServiceImpl.class));
-//TODO: Ew ma jednak być
-    //    bindClient(HelloService.class);
+    bindClient(HelloService.class);
   }
 }
