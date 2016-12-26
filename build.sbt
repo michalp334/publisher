@@ -69,7 +69,7 @@ lazy val subscriberImpl = project("subscriber-impl")
 
 
 def project(id: String) = Project(id, base = file(id))
-  .settings(eclipseSettings: _*)
+//  .settings(eclipseSettings: _*)
   .settings(javacOptions in compile ++= Seq("-encoding", "UTF-8", "-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-Xlint:deprecation"))
   .settings(jacksonParameterNamesJavacSettings: _*) // applying it to every project even if not strictly needed.
   .settings(
@@ -87,14 +87,14 @@ lazy val jacksonParameterNamesJavacSettings = Seq(
 
 // Configuration of sbteclipse
 // Needed for importing the project into Eclipse
-lazy val eclipseSettings = Seq(
-  EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
-  EclipseKeys.withBundledScalaContainers := false,
-  EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
-  EclipseKeys.eclipseOutput := Some(".target"),
-  EclipseKeys.withSource := true,
-  EclipseKeys.withJavadoc := true,
-  // avoid some scala specific source directories
-  unmanagedSourceDirectories in Compile := Seq((javaSource in Compile).value),
-  unmanagedSourceDirectories in Test := Seq((javaSource in Test).value)
-)
+//lazy val eclipseSettings = Seq(
+//  EclipseKeys.projectFlavor := EclipseProjectFlavor.Java,
+//  EclipseKeys.withBundledScalaContainers := false,
+//  EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
+//  EclipseKeys.eclipseOutput := Some(".target"),
+//  EclipseKeys.withSource := true,
+//  EclipseKeys.withJavadoc := true,
+//  // avoid some scala specific source directories
+//  unmanagedSourceDirectories in Compile := Seq((javaSource in Compile).value),
+//  unmanagedSourceDirectories in Test := Seq((javaSource in Test).value)
+//)
