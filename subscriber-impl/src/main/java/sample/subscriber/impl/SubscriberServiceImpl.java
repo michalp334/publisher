@@ -46,21 +46,21 @@ public class SubscriberServiceImpl implements SubscriberService {
       return Done.getInstance();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SubscriberServiceImpl that = (SubscriberServiceImpl) o;
-
-        if (helloService != null ? !helloService.equals(that.helloService) : that.helloService != null) return false;
-        return messageSet.equals(that.messageSet);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = helloService != null ? helloService.hashCode() : 0;
-        result = 31 * result + messageSet.hashCode();
-        return result;
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        SubscriberServiceImpl that = (SubscriberServiceImpl) o;
+//
+//        if (helloService != null ? !helloService.equals(that.helloService) : that.helloService != null) return false;
+//        return messageSet.equals(that.messageSet);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = helloService != null ? helloService.hashCode() : 0;
+//        result = 31 * result + messageSet.hashCode();
+//        return result;
+//    }
 }
