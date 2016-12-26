@@ -19,7 +19,7 @@ public interface SubscriberService extends Service {
 
   @Override
   default Descriptor descriptor() {
-      return named("helloservice").withCalls(
+      return named("subscriberservice").withCalls(
               pathCall("/api/read",  this::read))
             .withAutoAcl(true);
   }
