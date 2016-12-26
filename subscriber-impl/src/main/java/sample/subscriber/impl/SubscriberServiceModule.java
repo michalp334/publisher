@@ -12,9 +12,16 @@ import sample.subscriber.api.SubscriberService;
  * The module that binds the HelloService so that it can be served.
  */
 public class SubscriberServiceModule extends AbstractModule implements ServiceGuiceSupport {
+
+//  /*      * This tells Guice that whenever it sees a dependency on a TransactionLog,
+// * it should satisfy the dependency using a DatabaseTransactionLog.      */
+//  bind(TransactionLog.class).to(DatabaseTransactionLog.class);
+
+
   @Override
   protected void configure() {
     bindServices(serviceBinding(SubscriberService.class, SubscriberServiceImpl.class));
-    bindClient(HelloService.class);
+//TODO: Ew ma jednak być
+    //    bindClient(HelloService.class);
   }
 }
