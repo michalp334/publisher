@@ -7,6 +7,7 @@ import akka.Done;
 import akka.NotUsed;
 import akka.stream.javadsl.Flow;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
+import com.lightbend.lagom.javadsl.api.broker.Subscriber;
 import sample.helloworld.api.GreetingMessage;
 import sample.helloworld.api.HelloService;
 import sample.subscriber.api.SubscriberService;
@@ -14,6 +15,7 @@ import sample.subscriber.api.SubscriberService;
 import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletionStage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,17 +44,24 @@ public class SubscriberServiceImpl implements SubscriberService {
             log.info("read() called");
 
             //to się normalnie powinno wykonywać i zwracać Done w próżnię
-            SubscriberService subscriberService = helloService.greetingsTopic()
+            Subscriber<GreetingMessage> subscriber = helloService.greetingsTopic()
                     .subscribe();// <-- you get back a Subscriber instance
+            log.info("Logging subscriber instance: " + subscriber.toString());
 
-            log.info(subscriberService);
 
-            subscriberService
-                    .atLeastOnce(Flow.fromFunction((GreetingMessage message) -> {
-                        //tu wiemy że nie dochodzimy - albo
-                        log.info("inside .atLeastOnce() thingie");
+            Flow<GreetingMessage, Done, NotUsed> flow =
+                    Flow.fromFunction((GreetingMessage message) -> {
+                        log.info("logging inside Flow.fromFunction");
                         return doSomethingWithTheMessage(message); //side-effects
-                    }));
+                        });
+            log.info("logging after assignment to flow variable");
+
+
+            CompletionStage<Done> done = subscriber
+                    .atLeastOnce(flow);
+            log.info("logging after done");
+
+
             log.info("exited greetingsTopic().subscribe()... thingie");
             return completedFuture(messageSet.toString());
         };
