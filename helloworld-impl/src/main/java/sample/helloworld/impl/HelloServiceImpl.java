@@ -21,12 +21,18 @@ import scala.concurrent.duration.FiniteDuration;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import static java.util.concurrent.CompletableFuture.completedFuture;
 
 /**
  * Implementation of the HelloService.
  */
 public class HelloServiceImpl implements HelloService {
+
+  Logger log = LoggerFactory.getLogger(HelloServiceImpl.class);
 
   private final PersistentEntityRegistry persistentEntityRegistry;
 
@@ -69,6 +75,9 @@ public class HelloServiceImpl implements HelloService {
 
   public Topic<GreetingMessage> greetingsTopic() {
     return TopicProducer.singleStreamWithOffset(offset -> {
+
+      log.info("greetingsTopic() w ogóle wywołane");
+
       return persistentEntityRegistry
               .eventStream(HelloEventTag.INSTANCE, offset)
               .map(this::convertEvent);
@@ -79,6 +88,8 @@ public class HelloServiceImpl implements HelloService {
     private Pair<GreetingMessage, Offset> convertEvent(Pair<HelloEvent, Offset> helloEventOffsetPair) {
 
       GreetingMessage message = new GreetingMessage(helloEventOffsetPair.first().getMessage());
+
+      log.info("convertEvent() w ogóle wywołane");
 
       return new Pair<GreetingMessage, Offset>(message, helloEventOffsetPair.second());
     }

@@ -70,6 +70,8 @@ lazy val subscriberImpl = project("subscriber-impl")
 
 def project(id: String) = Project(id, base = file(id))
 //  .settings(eclipseSettings: _*)
+    .settings(libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.21")
+//  .settings(libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.21")
   .settings(javacOptions in compile ++= Seq("-encoding", "UTF-8", "-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-Xlint:deprecation"))
   .settings(jacksonParameterNamesJavacSettings: _*) // applying it to every project even if not strictly needed.
   .settings(

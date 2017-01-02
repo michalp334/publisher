@@ -15,10 +15,16 @@ import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static java.util.concurrent.CompletableFuture.completedFuture;
 
 
 public class SubscriberServiceImpl implements SubscriberService {
+
+
+  Logger log = LoggerFactory.getLogger(SubscriberServiceImpl.class);
 
   private final HelloService helloService;
   private final Set<GreetingMessage> messageSet = new HashSet<GreetingMessage>(0);
@@ -32,16 +38,28 @@ public class SubscriberServiceImpl implements SubscriberService {
     @Override
     public ServiceCall<NotUsed, String> read() {
         return request -> {
-            helloService.greetingsTopic()
-                    .subscribe() // <-- you get back a Subscriber instance
+
+            log.info("read() called");
+
+            //to się normalnie powinno wykonywać i zwracać Done w próżnię
+            SubscriberService subscriberService = helloService.greetingsTopic()
+                    .subscribe();// <-- you get back a Subscriber instance
+
+            log.info(subscriberService);
+
+            subscriberService
                     .atLeastOnce(Flow.fromFunction((GreetingMessage message) -> {
+                        //tu wiemy że nie dochodzimy - albo
+                        log.info("inside .atLeastOnce() thingie");
                         return doSomethingWithTheMessage(message); //side-effects
                     }));
+            log.info("exited greetingsTopic().subscribe()... thingie");
             return completedFuture(messageSet.toString());
         };
     }
 
     private Done doSomethingWithTheMessage(GreetingMessage message) {
+      log.info("doSomethingWithTheMessage() called. Message is; " + message);
       messageSet.add(message);
       return Done.getInstance();
     }
